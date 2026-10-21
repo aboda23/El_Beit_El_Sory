@@ -3,14 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import ProductGrid from '../components/menu/ProductGrid';
 import ProductDetailsModal from '../components/menu/ProductDetailsModal';
+import MenuFlyerModal from '../components/menu/MenuFlyerModal';
 import OfferBanner from '../components/offers/OfferBanner';
 import Button from '../components/common/Button';
-import { ArrowRight, Bike, Sparkles, Wallet, Flame, ChevronRight } from 'lucide-react';
+import { ArrowRight, Bike, Sparkles, Wallet, Flame, ChevronRight, Image as ImageIcon } from 'lucide-react';
 
 export function HomePage() {
   const navigate = useNavigate();
   const { products, categories, activeOffers, settings, t, isRTL } = useApp();
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isFlyerOpen, setIsFlyerOpen] = useState(false);
 
   // Popular / Featured Products
   const popularProducts = products
@@ -66,6 +68,15 @@ export function HomePage() {
               >
                 <span>{t('exploreMenu')}</span>
               </Button>
+
+              <button
+                type="button"
+                onClick={() => setIsFlyerOpen(true)}
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold bg-accent/15 text-accent border border-accent/30 hover:bg-accent/25 transition-all w-full sm:w-auto shadow-sm"
+              >
+                <ImageIcon className="w-4 h-4" />
+                <span>{isRTL ? 'المنيو الورقي 📜' : 'Menu Flyer 📜'}</span>
+              </button>
             </div>
 
             {/* 3 Value Pillars */}
@@ -111,7 +122,7 @@ export function HomePage() {
                 <span className="text-white font-bold text-base">
                   {isRTL ? 'وجبة شاورما عربي دبل مع بطاطس وتومية' : 'Double Arabic Shawarma Meal'}
                 </span>
-                <span className="text-accent font-extrabold text-sm">85 EGP</span>
+                <span className="text-accent font-extrabold text-sm">230 EGP</span>
               </div>
             </div>
           </div>
@@ -200,6 +211,12 @@ export function HomePage() {
         product={selectedProduct}
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
+      />
+
+      {/* Official Printed Menu Flyer Modal */}
+      <MenuFlyerModal
+        isOpen={isFlyerOpen}
+        onClose={() => setIsFlyerOpen(false)}
       />
     </div>
   );

@@ -40,23 +40,31 @@ export function AppProvider({ children }) {
 
   // Auto-migrate settings & menu to official Al Beit Al Souri details on initial mount
   useEffect(() => {
-    if (
-      !settings ||
-      settings.whatsappNumber === '201012345678' ||
-      settings.restaurantName === 'Campus Bites' ||
-      !settings.branchAddress?.includes('سيناء')
-    ) {
-      setSettings(initialSettings);
-    }
+    const MENU_VERSION = 'v2_official_menu_2026';
+    const savedVersion = localStorage.getItem('al_beit_menu_version');
 
-    // If categories don't have shawarma yet, migrate categories and products to Syrian specialties
-    if (categories && !categories.some((c) => c.id === 'shawarma')) {
+    // Migrate if version is outdated or missing official categories
+    const isMissingOfficialCategories = !categories || !categories.some((c) => c.id === 'crepes') || !categories.some((c) => c.id === 'grill');
+    
+    if (savedVersion !== MENU_VERSION || isMissingOfficialCategories) {
       setCategories(initialCategories);
       setProducts(initialProducts);
       setOffers(initialOffers);
+      setSettings(initialSettings);
+      localStorage.setItem('al_beit_menu_version', MENU_VERSION);
+    } else {
+      if (
+        !settings ||
+        settings.whatsappNumber === '201012345678' ||
+        settings.restaurantName === 'Campus Bites' ||
+        !settings.deliveryZones
+      ) {
+        setSettings(initialSettings);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   // 2. Global Toast Notifications
   const [toasts, setToasts] = useState([]);

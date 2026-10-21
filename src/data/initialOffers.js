@@ -1,88 +1,55 @@
-// Helper to generate dynamic ISO timestamps for realistic demo active/scheduled/expired states
 const now = new Date();
 const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString();
 const twentyFourHoursLater = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
-const twoDaysLater = new Date(now.getTime() + 48 * 60 * 60 * 1000).toISOString();
-const threeDaysLater = new Date(now.getTime() + 72 * 60 * 60 * 1000).toISOString();
-const fiveDaysLater = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString();
+const threeDaysLater = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString();
 const sevenDaysLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
-const fiveDaysAgo = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString();
-const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
 
 export const initialOffers = [
   {
-    id: "offer-001",
-    title: "عرض شاورما طلاب جامعة سيناء",
-    description: "خصم حصري 20% على جميع وجبات وسندوتشات الشاورما السوري لطلاب جامعة سيناء والقنطرة شرق!",
-    discountType: "percentage",
-    discountValue: 20,
-    productIds: [],
-    categoryIds: ["shawarma"],
-    startsAt: twoHoursAgo,
-    endsAt: twentyFourHoursLater,
-    isEnabled: true,
-    badgeText: "20% OFF",
-    bannerText: "عرض خاص لطلاب جامعة سيناء 20% خصم على الشاورما",
-    image: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=700&q=80"
-  },
-  {
-    id: "offer-002",
-    title: "Pizza Combo Feast",
-    description: "Get our signature Pepperoni Pizza Combo with fries and drink at a huge 25 EGP flat discount.",
-    discountType: "fixed",
-    discountValue: 25,
-    productIds: ["product-005"],
-    categoryIds: [],
-    startsAt: twoHoursAgo,
-    endsAt: twoDaysLater,
-    isEnabled: true,
-    badgeText: "-25 EGP",
-    bannerText: "Pizza Combo Feast — Save 25 EGP",
-    image: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id: "offer-003",
-    title: "Pasta Lovers Special",
-    description: "Warm, rich and comforting pasta dishes at 15% off across all pasta recipes.",
+    id: "offer-shawarma-uni",
+    title: "عرض شاورما البيت السوري للطلاب",
+    description: "خصم 15% على جميع وجبات وساندوتشات الشاورما السوري الأصلية لطلاب جامعة سيناء!",
     discountType: "percentage",
     discountValue: 15,
     productIds: [],
-    categoryIds: ["pasta"],
+    categoryIds: ["shawarma"],
     startsAt: twoHoursAgo,
     endsAt: threeDaysLater,
     isEnabled: true,
     badgeText: "15% OFF",
-    bannerText: "Pasta Lovers 15% OFF",
-    image: "https://images.unsplash.com/photo-1645112411341-6c4fd023714a?auto=format&fit=crop&w=600&q=80"
+    bannerText: "عرض خاص لطلاب جامعة سيناء — 15% خصم على قسم الشاورما",
+    image: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=700&q=80"
   },
   {
-    id: "offer-004",
-    title: "Weekend Midnight Munchies",
-    description: "Scheduled late-night discount on all sides and desserts starting next weekend.",
-    discountType: "percentage",
-    discountValue: 25,
-    productIds: [],
-    categoryIds: ["sides", "desserts"],
-    startsAt: fiveDaysLater,
+    id: "offer-royal-feast",
+    title: "خصم الوجبة الملكية الفاخرة",
+    description: "وفر 50 جنيه عند طلب الوجبة الملكية التي تكفي الأسرة والشباب (فرخة مشوية + نص شاورما + كريسبي + كفتة + أرز وبطاطس)",
+    discountType: "fixed",
+    discountValue: 50,
+    productIds: ["box-01"],
+    categoryIds: [],
+    startsAt: twoHoursAgo,
     endsAt: sevenDaysLater,
     isEnabled: true,
-    badgeText: "25% OFF",
-    bannerText: "Weekend Midnight Munchies Coming Soon",
-    image: "https://images.unsplash.com/photo-1576107232684-1279f3908594?auto=format&fit=crop&w=600&q=80"
+    badgeText: "-50 EGP",
+    bannerText: "الوجبة الملكية الفاخرة بخصم 50 جنيه!",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80"
   },
   {
-    id: "offer-005",
-    title: "Orientation Week Welcome",
-    description: "Expired orientation promotional offer archive.",
+    id: "offer-crepes-combo",
+    title: "مهرجان الكريبات السورية",
+    description: "خصم 10% على تشكيلة الكريبات الغنية بالجبنة والدجاج المقرمش والشاورما",
     discountType: "percentage",
-    discountValue: 30,
-    productIds: ["product-001"],
-    categoryIds: [],
-    startsAt: fiveDaysAgo,
-    endsAt: oneDayAgo,
+    discountValue: 10,
+    productIds: [],
+    categoryIds: ["crepes"],
+    startsAt: twoHoursAgo,
+    endsAt: twentyFourHoursLater,
     isEnabled: true,
-    badgeText: "Expired",
-    bannerText: "Orientation Week 30% OFF",
-    image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80"
+    badgeText: "10% OFF",
+    bannerText: "مهرجان الكريبات السورية — خصم 10%",
+    image: "https://images.unsplash.com/photo-1519676867240-f03562e64548?auto=format&fit=crop&w=600&q=80"
   }
 ];
+
+export default initialOffers;

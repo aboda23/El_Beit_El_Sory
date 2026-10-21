@@ -5,8 +5,9 @@ import CategoryTabs from '../components/menu/CategoryTabs';
 import SearchBar from '../components/menu/SearchBar';
 import ProductGrid from '../components/menu/ProductGrid';
 import ProductDetailsModal from '../components/menu/ProductDetailsModal';
+import MenuFlyerModal from '../components/menu/MenuFlyerModal';
 import OfferBanner from '../components/offers/OfferBanner';
-import { Filter, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { Filter, SlidersHorizontal, Sparkles, Image as ImageIcon } from 'lucide-react';
 
 export function MenuPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,6 +22,7 @@ export function MenuPage() {
   const [sortBy, setSortBy] = useState('featured');
   const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isFlyerOpen, setIsFlyerOpen] = useState(false);
 
   // Sync category param with state
   useEffect(() => {
@@ -136,7 +138,7 @@ export function MenuPage() {
 
       {/* Filter & Sorting Controls Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-2 pb-1">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-bold text-text-primary uppercase tracking-wider">
             {selectedCategory === 'all'
               ? t('allMenuItems')
@@ -145,6 +147,16 @@ export function MenuPage() {
           <span className="text-xs text-text-muted">
             ({filteredProducts.length} {t('itemsCount', 'items')})
           </span>
+
+          {/* View Official Printed Menu Flyer Button */}
+          <button
+            type="button"
+            onClick={() => setIsFlyerOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-accent/15 text-accent border border-accent/30 hover:bg-accent/25 transition-all shadow-sm ml-1"
+          >
+            <ImageIcon className="w-3.5 h-3.5" />
+            <span>{isRTL ? 'عرض صورة المنيو الورقي 📜' : 'View Printed Menu Flyer 📜'}</span>
+          </button>
         </div>
 
         <div className="flex items-center gap-3">
@@ -206,6 +218,12 @@ export function MenuPage() {
             setSearchParams(newParams);
           }
         }}
+      />
+
+      {/* Official Printed Menu Flyer Modal */}
+      <MenuFlyerModal
+        isOpen={isFlyerOpen}
+        onClose={() => setIsFlyerOpen(false)}
       />
     </div>
   );

@@ -35,6 +35,18 @@ export function CheckoutPage() {
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [orderNotes, setOrderNotes] = useState('');
 
+  // Delivery Zones from Settings
+  const deliveryZones = settings?.deliveryZones || [
+    { id: "inside_city", name: "داخل المدينة", nameEn: "Inside City", fee: 10 },
+    { id: "uni_gate", name: "باب الجامعة", nameEn: "Sinai University Gate", fee: 15 },
+    { id: "uni_housing", name: "سكن الجامعة", nameEn: "University Dorms / Housing", fee: 20 },
+    { id: "behind_uni", name: "خلف الجامعة", nameEn: "Behind University", fee: 25 },
+    { id: "al_sabea", name: "السابعة", nameEn: "The 7th District", fee: 30 },
+    { id: "al_balad_ferry", name: "البلد والمعدية", nameEn: "Al Balad & The Ferry", fee: 40 }
+  ];
+  const [selectedZoneId, setSelectedZoneId] = useState(deliveryZones[0]?.id || 'inside_city');
+  const activeZone = deliveryZones.find((z) => z.id === selectedZoneId) || deliveryZones[0];
+
   // Validation errors
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,7 +71,7 @@ export function CheckoutPage() {
     );
   }
 
-  const deliveryFee = fulfillmentMethod === 'delivery' ? (settings?.deliveryFee || 15) : 0;
+  const deliveryFee = fulfillmentMethod === 'delivery' ? (activeZone?.fee ?? 10) : 0;
   const subtotal = cartSummary.subtotal;
   const finalTotal = subtotal + deliveryFee;
 
@@ -113,6 +125,7 @@ export function CheckoutPage() {
       },
       items: cart,
       fulfillmentMethod,
+      deliveryZone: fulfillmentMethod === 'delivery' ? (isRTL ? activeZone?.name : (activeZone?.nameEn || activeZone?.name)) : '',
       deliveryAddress: fulfillmentMethod === 'delivery' ? deliveryAddress.trim() : '',
       notes: orderNotes.trim(),
       subtotal,
@@ -248,26 +261,57 @@ export function CheckoutPage() {
               </div>
             </div>
 
-            {/* Delivery Address (only if delivery chosen) */}
+            {/* Delivery Address & Zone (only if delivery chosen) */}
             {fulfillmentMethod === 'delivery' ? (
               <div className="bg-bg-card border border-border-dark rounded-3xl p-5 shadow-card space-y-4 animate-fade-in">
                 <h3 className="text-xs font-bold text-text-primary uppercase tracking-wider flex items-center gap-1.5">
                   <MapPin className="w-4 h-4 text-accent" />
-                  <span>{t('campusAddress')}</span>
+                  <span>{isRTL ? 'منطقة وعنوان التوصيل' : 'Delivery Area & Address'}</span>
                 </h3>
+
+                {/* Delivery Zone Selector */}
+                <div>
+                  <label className="block text-xs font-semibold text-text-secondary mb-2">
+                    {isRTL ? 'اختر منطقة التوصيل (حسب منيو المطعم):' : 'Select Delivery Zone:'}
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {deliveryZones.map((zone) => {
+                      const isSelected = selectedZoneId === zone.id;
+                      return (
+                        <button
+                          key={zone.id}
+                          type="button"
+                          onClick={() => setSelectedZoneId(zone.id)}
+                          className={`p-2.5 rounded-2xl border text-start transition-all cursor-pointer ${
+                            isSelected
+                              ? 'border-accent bg-accent/15 text-text-primary shadow-sm ring-1 ring-accent'
+                              : 'border-border-dark bg-bg-secondary text-text-secondary hover:border-text-muted hover:bg-bg-secondary/70'
+                          }`}
+                        >
+                          <span className="block text-xs font-bold text-text-primary">
+                            {isRTL ? zone.name : (zone.nameEn || zone.name)}
+                          </span>
+                          <span className="block text-[11px] text-accent font-extrabold mt-1">
+                            +{zone.fee} {settings?.currency || 'EGP'}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-text-secondary mb-1">
-                    {t('campusAddress')} <span className="text-red-400">*</span>
+                    {isRTL ? 'العنوان بالتفصيل (المبنى / السكن / رقم الشقة أو الغرفة)' : t('campusAddress')} <span className="text-red-400">*</span>
                   </label>
                   <textarea
-                    rows={3}
+                    rows={2}
                     value={deliveryAddress}
                     onChange={(e) => {
                       setDeliveryAddress(e.target.value);
                       if (errors.deliveryAddress) setErrors({ ...errors, deliveryAddress: null });
                     }}
-                    placeholder={t('campusAddressPlaceholder')}
+                    placeholder={isRTL ? "مثال: سكن الطلبة، عمارة 3، شقة 12، بجوار البوابة" : t('campusAddressPlaceholder')}
                     className={`w-full bg-bg-secondary border text-text-primary text-xs rounded-xl p-3 focus:outline-none transition-colors ${
                       errors.deliveryAddress
                         ? 'border-red-500 focus:border-red-500'

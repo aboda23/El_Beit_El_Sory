@@ -79,7 +79,8 @@ export function formatWhatsAppOrderMessage({ order, settings }) {
 
   let locationText = '';
   if (order.fulfillmentMethod === 'delivery') {
-    locationText = `📍 *عنوان التوصيل:* ${order.deliveryAddress || 'غير محدد'}\n`;
+    const zoneStr = order.deliveryZone ? `🛵 *منطقة التوصيل:* ${order.deliveryZone}\n` : '';
+    locationText = `${zoneStr}📍 *عنوان التوصيل:* ${order.deliveryAddress || 'غير محدد'}\n`;
   } else {
     locationText = `📍 *موقع الفرع:* ${settings?.branchAddress || 'مدينة القنطرة شرق - أمام جامعة سيناء'}\n`;
   }
