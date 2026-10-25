@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
-import { MessageCircle, MapPin, Clock, Phone, ShieldCheck, AlertCircle } from 'lucide-react';
+import { MessageCircle, MapPin, Clock, Phone, AlertCircle, Bike } from 'lucide-react';
 import { buildWhatsAppUrl } from '../../utils/orderFormatter';
 import logoImg from '../../assets/logo.jpg';
 
@@ -132,23 +132,28 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Admin & Info */}
+          {/* Fast Delivery Info */}
           <div>
-            <h4 className="font-semibold text-text-primary text-xs uppercase tracking-wider mb-3">
-              {isRTL ? 'لوحة تحكم الإدارة' : 'Management'}
+            <h4 className="font-semibold text-text-primary text-xs uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <Bike className="w-4 h-4 text-accent" />
+              <span>{isRTL ? 'خدمة التوصيل السريع' : 'Fast Delivery Service'}</span>
             </h4>
             <p className="text-xs text-text-muted mb-3 leading-relaxed">
               {isRTL
-                ? 'إدارة وجبات المنيو والأسعار وتحديث العروض وحالة توفر الوجبات مباشرة للعملاء.'
-                : 'Staff and management can access menu pricing, stock availability, and timed promotions.'}
+                ? 'توصيل أوردرات ساخنة وسريعة مباشرة لجميع بوابات وسكن طلاب جامعة سيناء وكافة أنحاء القنطرة شرق.'
+                : 'Hot, fast delivery directly to all Sinai University gates, student dorms, and across Qantara Sharq.'}
             </p>
-            <Link
-              to="/admin"
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-bg-card hover:bg-bg-cardHover border border-border-dark text-text-primary hover:text-accent transition-all"
-            >
-              <ShieldCheck className="w-4 h-4 text-accent" />
-              <span>{isRTL ? 'لوحة إدارة المطعم' : 'Admin Dashboard'}</span>
-            </Link>
+            <div className="flex flex-wrap gap-1.5 text-[11px]">
+              <span className="px-2.5 py-1 rounded-xl bg-bg-card border border-border-dark text-text-secondary font-medium">
+                {isRTL ? '🛵 سكن الجامعة' : 'University Dorms'}
+              </span>
+              <span className="px-2.5 py-1 rounded-xl bg-bg-card border border-border-dark text-text-secondary font-medium">
+                {isRTL ? '🎓 بوابات الجامعة' : 'Campus Gates'}
+              </span>
+              <span className="px-2.5 py-1 rounded-xl bg-bg-card border border-border-dark text-text-secondary font-medium">
+                {isRTL ? '🏙️ داخل المدينة' : 'City Area'}
+              </span>
+            </div>
           </div>
         </div>
 

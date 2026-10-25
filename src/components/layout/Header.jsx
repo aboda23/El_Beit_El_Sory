@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
-import { ShoppingBag, Flame, Sparkles, Globe } from 'lucide-react';
+import { ShoppingBag, Flame, Sparkles, Globe, LogIn, ShieldCheck } from 'lucide-react';
 import logoImg from '../../assets/logo.jpg';
 
 export function Header() {
-  const { cartSummary, settings, lang, toggleLang, t } = useApp();
+  const { cartSummary, settings, lang, toggleLang, t, isAdminAuthenticated } = useApp();
   const navigate = useNavigate();
 
   return (
@@ -78,8 +78,8 @@ export function Header() {
           </NavLink>
         </nav>
 
-        {/* Actions (Language Switcher, Cart & Order Now) */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
+        {/* Actions (Language Switcher, Login, Order Now & Cart) */}
+        <div className="flex items-center gap-2 sm:gap-2.5">
           {/* Language Toggle Button */}
           <button
             type="button"
@@ -90,6 +90,24 @@ export function Header() {
             <Globe className="w-3.5 h-3.5 text-accent" />
             <span>{lang === 'ar' ? 'EN' : 'عربي'}</span>
           </button>
+
+          {/* Login / Admin Dashboard Button */}
+          <Link
+            to={isAdminAuthenticated ? "/admin" : "/admin/login"}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-bold bg-bg-secondary hover:bg-bg-card border border-border-dark text-text-primary hover:border-accent hover:text-accent transition-all active:scale-95"
+            title={isAdminAuthenticated ? (lang === 'ar' ? 'لوحة تحكم الإدارة' : 'Admin Dashboard') : (lang === 'ar' ? 'تسجيل الدخول' : 'Admin Login')}
+          >
+            {isAdminAuthenticated ? (
+              <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+            ) : (
+              <LogIn className="w-3.5 h-3.5 text-accent" />
+            )}
+            <span className="hidden xs:inline-block">
+              {isAdminAuthenticated
+                ? (lang === 'ar' ? 'الإدارة' : 'Dashboard')
+                : (lang === 'ar' ? 'تسجيل الدخول' : 'Login')}
+            </span>
+          </Link>
 
           {/* Order Now CTA (Desktop only) */}
           <button
