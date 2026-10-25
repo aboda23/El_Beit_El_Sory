@@ -36,16 +36,25 @@ export function CheckoutPage() {
   const [orderNotes, setOrderNotes] = useState('');
 
   // Delivery Zones from Settings
-  const deliveryZones = settings?.deliveryZones || [
-    { id: "inside_city", name: "داخل المدينة", nameEn: "Inside City", fee: 10 },
-    { id: "uni_gate", name: "باب الجامعة", nameEn: "Sinai University Gate", fee: 15 },
-    { id: "uni_housing", name: "سكن الجامعة", nameEn: "University Dorms / Housing", fee: 20 },
-    { id: "behind_uni", name: "خلف الجامعة", nameEn: "Behind University", fee: 25 },
-    { id: "al_sabea", name: "السابعة", nameEn: "The 7th District", fee: 30 },
-    { id: "al_balad_ferry", name: "البلد والمعدية", nameEn: "Al Balad & The Ferry", fee: 40 }
-  ];
+  const deliveryZones = settings?.deliveryZones && settings.deliveryZones.length > 0
+    ? settings.deliveryZones
+    : [
+        { id: "inside_city", name: "داخل المدينة", nameEn: "Inside City", fee: 10 },
+        { id: "uni_gate", name: "باب الجامعة", nameEn: "Sinai University Gate", fee: 15 },
+        { id: "uni_housing", name: "سكن الجامعة", nameEn: "University Dorms / Housing", fee: 20 },
+        { id: "behind_uni", name: "خلف الجامعة", nameEn: "Behind University", fee: 25 },
+        { id: "al_sabea", name: "السابعة", nameEn: "The 7th District", fee: 30 },
+        { id: "al_balad_ferry", name: "البلد والمعدية", nameEn: "Al Balad & The Ferry", fee: 40 }
+      ];
   const [selectedZoneId, setSelectedZoneId] = useState(deliveryZones[0]?.id || 'inside_city');
   const activeZone = deliveryZones.find((z) => z.id === selectedZoneId) || deliveryZones[0];
+
+  // Auto-sync selectedZoneId if settings change or zone removed
+  React.useEffect(() => {
+    if (deliveryZones.length > 0 && !deliveryZones.some((z) => z.id === selectedZoneId)) {
+      setSelectedZoneId(deliveryZones[0].id);
+    }
+  }, [deliveryZones, selectedZoneId]);
 
   // Validation errors
   const [errors, setErrors] = useState({});
